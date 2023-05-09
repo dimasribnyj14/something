@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <h1>Каталог</h1>
+    <div class="every_product">
+        {% for product in products %}
+            <form method = "POST" class = "addCookie"action="{% url 'catalog' %}" >
+            {% csrf_token %}
+            <h2>{{ product.name }}</h2>
+            <p class="desc">{{ product.desc }}</p>
+            <img src="{{ product.image.url }}" alt="">
+            <h3 class = "price">{{ product.price }} $</h3>                
+                <input type="hidden" name="product_pk" value="{{ product.pk }}">
+                <input type = "number" class = "count" name = "product_count" min = "1" value = "1">
+                <button class = "add-cookie">Додати до кошику</button>
+            </form>
+        {% endfor %}        
+    </div>
+
+    <script src = 'https://code.jquery.com/jquery-3.6.4.js' integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous" defer></script>
+    <script src = '{% static "addCookie.js" %}' defer></script>
+</body>
+</html>

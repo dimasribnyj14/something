@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <h1>Ваш кошик</h1>
+    {% if response.COOKIE.product_pk == true %}
+    {% for product in products %}
+    <div class='product'>
+        <div class = "main-product">
+            <h2 class='name'>{{ product.0.name }}</h2>
+            <img src="{{ product.0.image.url }}" alt="">
+        </div>
+        <h3 class='price'>Ціна: {{ product.0.price }}</h3>
+        <form method="POST" action="{% url "basket" %}" class ="deleteCookie"> 
+           {% csrf_token %}
+           <div class='count-product'>
+            <p id="{{ product.0.name }}" class='product-count'>Кількість: {{ product.1 }}</p>    
+                
+            <div class ="buttons">
+            <button class="plus {{ product.0.name }}">+</button>
+                <button class="minus {{ product.0.name }}">-</button>
+                <button class="remove {{ product.0.name }}"> Видалити з кошика</button>                
+            </div> 
+
+            </div>
+            <input type="hidden" name='product_count' value="{{ product.1 }}">
+           <input type="hidden" name="product_pk" value="{{ product.0.pk }}">
+           
+        
+        </form>
+    </div>
+    {% endfor %}
+    <h1 class="products-price">Ціна усіх продуктів: 0</h1>
+    {% else %}
+    <h2>Кошик пустий</h2>
+    {% endif %}
+
+    
+    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+    <script src = '{% static "deleteCookie.js" %}' defer></script>
+</body>
+</html>
